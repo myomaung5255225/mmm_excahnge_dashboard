@@ -1,4 +1,10 @@
 import { TextInput } from './textinput'
 import { GeneralButton } from './generalbutton'
 import { LinkText } from './linktext'
-export { TextInput, GeneralButton, LinkText }
+import { CurrencyTable } from './CurrencyTable'
+import { RateTable } from './RateTable'
+import { CurrencySelector } from './selector'
+import { PageLoader } from './pageloader'
+import { Modal } from './modal'
+import { ErrorHandler } from './errorHandler'
+export { TextInput, GeneralButton, LinkText, CurrencySelector, CurrencyTable, RateTable, Modal, PageLoader, ErrorHandler }
