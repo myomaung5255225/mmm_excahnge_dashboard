@@ -1,9 +1,9 @@
-import React, { ReactChildren, SetStateAction } from "react";
+import React, { ReactElement, SetStateAction } from "react";
 
 interface modalProps {
     show: any;
-    setShow: React.Dispatch<SetStateAction<boolean>>;
-    children: ReactChildren,
+    setShow: React.Dispatch<SetStateAction<any>>;
+    children: ReactElement,
     onNextFunction: () => any | void;
     title?: string;
 }
