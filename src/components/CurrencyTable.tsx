@@ -2,7 +2,7 @@ import React from "react";
 
 export interface currencyProps {
     _id?: any;
-    name?: string;
+    name?: any;
     keyword?: string;
     user?: string;
     createdAt?: string;

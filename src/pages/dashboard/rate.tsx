@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DashboardWrapper } from "../../templates/dashboardwrapper";
 import { FormContainer } from '../../templates/FormContainer'
-import { RateTable } from '../../components/RateTable'
-import { CurrencySelector, GeneralButton, TextInput, PageLoader } from "../../components";
+import { rateProps, RateTable } from '../../components/RateTable'
+import { CurrencySelector, GeneralButton, TextInput, PageLoader, Modal } from "../../components";
 import { API } from "../../services";
 
 export const RatePage: React.FC = () => {
@@ -15,6 +15,8 @@ export const RatePage: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const [mod, setMod] = useState('add')
     const [refresh, setRefresh] = useState(false)
+    const [show, setShow] = useState(false)
+    const [id, setId] = useState('')
 
     const getCurrencies = () => {
         setLoading(true)
@@ -47,12 +49,80 @@ export const RatePage: React.FC = () => {
     }, [refresh])
 
     const onNextFunction = () => {
-
+        if (mod === 'add') {
+            setLoading(true)
+            API.post('/rate', {
+                "from_currency": fromCurrency,
+                "to_currency": toCurrency,
+                "sell": sell,
+                "buy": buy
+            }).then(res => {
+                console.log(res.data)
+            })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setBuy('');
+                    setSell('')
+                    setFromCurrency('')
+                    setToCurrency('')
+                    setLoading(false)
+                    setRefresh(!refresh)
+                    setMod("add")
+                })
+        }
+        else {
+            setLoading(true)
+            API.put('/rate', {
+                "from_currency": fromCurrency,
+                "to_currency": toCurrency,
+                "sell": sell,
+                "buy": buy,
+                "id": id
+            }).then(res => {
+                console.log(res.data)
+            })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setBuy('');
+                    setSell('')
+                    setFromCurrency('')
+                    setToCurrency('')
+                    setLoading(false)
+                    setRefresh(!refresh)
+                    setMod("add")
+                })
+        }
     }
-    const onEditFunction = (data: any) => {
-
+    const onEditFunction = (data: rateProps) => {
+        setMod('edit')
+        setId(data._id);
+        setFromCurrency(data.from_currency?._id);
+        setToCurrency(data.to_currency?._id);
+        setSell(data.sell)
+        setBuy(data.buy)
     }
-    const onDeleteFunction = (id: string) => {
+    const onDeleteFunction = (id: any) => {
+        setShow(true)
+        setId(id)
+    }
+    const onNextDelete = () => {
+        setLoading(true)
+        setShow(false)
+        API.delete('/rate', { data: { id: id } }).then(res => {
+            console.log(res.data)
+        })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setLoading(false)
+                setRefresh(!refresh)
+
+            })
 
     }
 
@@ -66,8 +136,8 @@ export const RatePage: React.FC = () => {
                         <CurrencySelector data={currencies} label="From" value={fromCurrency} setValue={setFromCurrency} />
                         <CurrencySelector data={currencies.filter((value: any) => value._id !== fromCurrency)} label="To" value={toCurrency} setValue={setToCurrency} />
                         <TextInput label="Sell" input_type='number' value={buy} setValue={setBuy} placeholder='13443' />
-                        <TextInput label="Buy" input_type='number' value={buy} setValue={setBuy} placeholder='34323' />
-                        <GeneralButton label={mod === 'add' ? 'Create' : 'Edit'} onNextFunction={onNextFunction} />
+                        <TextInput label="Buy" input_type='number' value={sell} setValue={setSell} placeholder='34323' />
+                        <GeneralButton disalbed={!fromCurrency || !toCurrency || !sell || !buy} label={mod === 'add' ? 'Create' : 'Update'} onNextFunction={onNextFunction} />
                     </FormContainer>
                 </div>
                 <div className='col-span-6 md:col-span-4' >
@@ -76,6 +146,11 @@ export const RatePage: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <Modal show={show} setShow={setShow} title="💣" onNextFunction={onNextDelete}>
+                <div className='px-2 py-2 text-red-500'>
+                    Are you sure to want to delete?
+                </div>
+            </Modal>
         </DashboardWrapper>
     )
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GeneralButton, Modal, PageLoader, TextInput } from "../../components";
 import { DashboardWrapper } from "../../templates/dashboardwrapper";
 import { FormContainer } from "../../templates/FormContainer";
-import { CurrencyTable } from '../../components/CurrencyTable'
+import { currencyProps, CurrencyTable } from '../../components/CurrencyTable'
 import { API } from "../../services";
 export const CurrencyPage: React.FC = () => {
     const [name, setName] = useState('')
@@ -69,7 +69,7 @@ export const CurrencyPage: React.FC = () => {
                 })
         }
     }
-    const onEditFunction = (data: any) => {
+    const onEditFunction = (data: currencyProps) => {
         setMod('edit');
         setId(data._id);
         setName(data.name);
