@@ -1,13 +1,31 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+body{
+  margin: 0px;
+  padding: 0px;
+  font-family:"Poppins" ;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.auth_wrapper{
+  @apply bg-blue-500 w-full flex justify-center content-center items-center min-h-screen
+}
+.auth_form_container{
+  @apply flex w-full flex-col max-w-md bg-white shadow-sm px-2 py-2 rounded-md
+}
+.logo_container{
+  @apply w-full flex justify-center items-center py-2
+}
+
+.logo{
+  @apply w-20 h-20 animate-pulse
+}
+
+.text_input{
+  @apply w-full text-sm bg-gray-100 focus:outline-none border border-blue-500 rounded-md px-2 py-2 hover:bg-gray-50
+}
+
+.general_button{
+  @apply bg-blue-400 hover:bg-blue-500 text-white flex w-full px-2 py-2 justify-center items-center content-center rounded-md shadow-sm
 }
